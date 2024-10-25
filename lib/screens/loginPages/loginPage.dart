@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
           elevation: 0,
           leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, '/firstLoginPage');
               },
               icon: const Icon(
                 Icons.arrow_back_ios,

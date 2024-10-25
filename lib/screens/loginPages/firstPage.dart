@@ -9,6 +9,17 @@ class FirstLoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black26,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/fourthPage');
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            )),
+      ),
       backgroundColor: Colors.black26,
       body: Column(
         children: [
