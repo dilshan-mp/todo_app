@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class MainButton extends StatelessWidget {
   final String buttontext;
+  final VoidCallback onPressed;
   const MainButton({
     super.key,
     required this.buttontext,
+    required this.onPressed,
   });
 
   @override
@@ -13,7 +15,7 @@ class MainButton extends StatelessWidget {
       width: 327,
       height: 48,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xff8875FF),
             shape:

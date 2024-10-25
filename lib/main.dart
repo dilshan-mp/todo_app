@@ -2,6 +2,8 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/loginPages/firstPage.dart';
+import 'package:todo_app/screens/loginPages/loginPage.dart';
+import 'package:todo_app/screens/loginPages/registerPage.dart';
 import 'package:todo_app/screens/splashPages/firstPage.dart';
 import 'package:todo_app/screens/splashPages/fourthPage.dart';
 import 'package:todo_app/screens/splashPages/secondPage.dart';
@@ -28,13 +30,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/firstPage',
       routes: {
         //splashScreens
-        '/firstPage':(context)=>const FirstPage(),
-        '/secondPage':(context)=>const SecondPage(),
-        '/thirdPage':(context)=>const ThirdScreen(),
-        '/fourthPage':(context)=>const Fourthpage(),
+        '/firstPage': (context) => const FirstPage(),
+        '/secondPage': (context) => const SecondPage(),
+        '/thirdPage': (context) => const ThirdScreen(),
+        '/fourthPage': (context) => const Fourthpage(),
         //login pages
-        '/firstLoginPage':(context)=>const FirstLoginPage(),
-
+        '/firstLoginPage': (context) => const FirstLoginPage(),
+        '/loginPage': (context) => const LoginPage(),
+        '/registerPage': (context) => const RegisterPage(),
       },
     );
   }

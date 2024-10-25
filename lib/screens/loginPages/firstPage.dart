@@ -8,11 +8,11 @@ class FirstLoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.black26,
       body: Column(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(top: 120),
             child: Center(
               child: Text(
@@ -24,10 +24,10 @@ class FirstLoginPage extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 26,
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 44, right: 44),
             child: Center(
               child: Text(
@@ -37,16 +37,24 @@ class FirstLoginPage extends StatelessWidget {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           MainButton(
             buttontext: 'LOGIN',
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, '/loginPage');
+            },
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 40, top: 20),
-            child: TransparentMainButton(buttontext: 'CREATE ACCOUNT'),
+            child: TransparentMainButton(
+              buttonText: 'CREATE ACCOUNT',
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/registerPage');
+              },
+            ),
           )
         ],
       ),
