@@ -101,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Center(
               child: TransparentMainButton(
+                imageAsset: 'assets/google.png',
                 buttonText: 'Login With Google',
                 onPressed: () {},
               ),
@@ -110,9 +111,29 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Center(
               child: TransparentMainButton(
-                svgImage: 'assets/svg/apple-svgrepo-com.svg',
+                imageAsset: 'assets/apple.png',
                 buttonText: 'Login With Apple',
                 onPressed: () {},
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don’t have an account?",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Register',
+                        style: TextStyle(color: Colors.blue),
+                      ))
+                ],
               ),
             )
           ],
