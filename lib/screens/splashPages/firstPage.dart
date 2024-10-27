@@ -12,11 +12,13 @@ class FirstPage extends StatefulWidget {
 class _FirstPageState extends State<FirstPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/secondPage');
-    });
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        Navigator.pushReplacementNamed(context, '/secondPage');
+      },
+    );
   }
 
   @override

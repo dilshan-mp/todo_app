@@ -5,14 +5,13 @@ import 'package:flutter_svg/svg.dart';
 class TransparentMainButton extends StatelessWidget {
   final String buttonText;
   final VoidCallback onPressed;
-  final String? imageAsset; // Add an optional image parameter
+  final String? imageAsset;
 
   const TransparentMainButton({
     super.key,
     required this.buttonText,
     required this.onPressed,
     this.imageAsset,
-    // Accept image as an optional parameter
   });
 
   @override
@@ -36,12 +35,12 @@ class TransparentMainButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (imageAsset != null) // Check if a regular image path is provided
+            if (imageAsset != null) 
               Padding(
                 padding: const EdgeInsets.only(
-                    right: 8.0), // Space between image and text
+                    right: 8.0), 
                 child: Image.asset(
-                  imageAsset!, // Load the regular image
+                  imageAsset!, 
                   width: 24,
                   height: 24,
                 ),
