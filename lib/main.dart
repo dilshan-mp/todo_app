@@ -7,9 +7,8 @@ import 'package:todo_app/screens/loginPages/firstPage.dart';
 import 'package:todo_app/screens/loginPages/loginPage.dart';
 import 'package:todo_app/screens/loginPages/registerPage.dart';
 import 'package:todo_app/screens/splashPages/firstPage.dart';
-import 'package:todo_app/screens/splashPages/fourthPage.dart';
 import 'package:todo_app/screens/splashPages/secondPage.dart';
-import 'package:todo_app/screens/splashPages/thirdScreen.dart';
+import 'package:todo_app/screens/taskPage/homePage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,18 +31,20 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const SecondPage(),
+      home: const HomePage(),
       initialRoute: '/firstPage',
       routes: {
-        //splashScreens
-        '/firstPage': (context) => const FirstPage(),
-        '/secondPage': (context) => const SecondPage(),
-        '/thirdPage': (context) => const ThirdScreen(),
-        '/fourthPage': (context) => const Fourthpage(),
-        //login pages
-        '/firstLoginPage': (context) => const FirstLoginPage(),
-        '/loginPage': (context) => const LoginPage(),
-        '/registerPage': (context) => const Registerpage(),
+        // //splashScreens
+        // '/firstPage': (context) => const FirstPage(),
+        // 'onBoardPage': (context) => const OnboardingPage(),
+
+        // //login pages
+        // '/firstLoginPage': (context) => const FirstLoginPage(),
+        // '/loginPage': (context) => const LoginPage(),
+        // '/registerPage': (context) => const Registerpage(),
+
+        //taskPage
+        "/homePage": (context) => const HomePage()
       },
     );
   }

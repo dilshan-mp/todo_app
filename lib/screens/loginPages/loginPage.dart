@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
+import 'package:todo_app/services/auth.dart';
 import 'package:todo_app/widgets/mainButton.dart';
 import 'package:todo_app/widgets/textFields.dart';
 import 'package:todo_app/widgets/transparentMainButton.dart';
@@ -14,6 +15,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String email = "", password = "";
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -75,130 +77,132 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 24),
-            child: Text(
-              'Login',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 53,
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 24),
-            child: Text(
-              'UserName',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Textfields(
-            hintText: 'eneter email',
-            textInputType: TextInputType.emailAddress,
-            isPassword: false,
-            textEditingController: emailController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter email';
-              }
-              return null;
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(left: 24, top: 25),
-            child: Text(
-              'Password',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Textfields(
-            hintText: 'eneter password',
-            textInputType: TextInputType.visiblePassword,
-            isPassword: true,
-            textEditingController: passwordController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter password';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(
-            height: 69,
-          ),
-          Center(
-            child: MainButton(
-              buttontext: 'Login',
-              onPressed: login,
-            ),
-          ),
-          const SizedBox(
-            height: 31,
-          ),
-          Center(child: Image.asset('assets/Divider.png')),
-          const SizedBox(
-            height: 29,
-          ),
-          Center(
-            child: TransparentMainButton(
-              imageAsset: 'assets/google.png',
-              buttonText: 'Login With Google',
-              onPressed: () {},
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: TransparentMainButton(
-              imageAsset: 'assets/apple.png',
-              buttonText: 'Login With Apple',
-              onPressed: () {},
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don’t have an account?",
-                  style: TextStyle(color: Colors.white),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w700,
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                )
-              ],
+              ),
             ),
-          )
-        ],
+            const SizedBox(
+              height: 53,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 24),
+              child: Text(
+                'UserName',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Textfields(
+              hintText: 'eneter email',
+              textInputType: TextInputType.emailAddress,
+              isPassword: false,
+              textEditingController: emailController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter email';
+                }
+                return null;
+              },
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 24, top: 25),
+              child: Text(
+                'Password',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Textfields(
+              hintText: 'eneter password',
+              textInputType: TextInputType.visiblePassword,
+              isPassword: true,
+              textEditingController: passwordController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter password';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(
+              height: 69,
+            ),
+            Center(
+              child: MainButton(buttontext: 'Login', onPressed: login),
+            ),
+            const SizedBox(
+              height: 31,
+            ),
+            Center(child: Image.asset('assets/Divider.png')),
+            const SizedBox(
+              height: 29,
+            ),
+            Center(
+              child: TransparentMainButton(
+                imageAsset: 'assets/google.png',
+                buttonText: 'Login With Google',
+                onPressed: () {
+                  AuthMethods().signInWithGoogle(context);
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: TransparentMainButton(
+                imageAsset: 'assets/apple.png',
+                buttonText: 'Login With Apple',
+                onPressed: () {},
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don’t have an account?",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

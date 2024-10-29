@@ -16,7 +16,7 @@ class _FirstPageState extends State<FirstPage> {
     Timer(
       const Duration(seconds: 3),
       () {
-        Navigator.pushReplacementNamed(context, '/secondPage');
+        Navigator.pushReplacementNamed(context, 'onBoardPage');
       },
     );
   }

@@ -29,7 +29,7 @@ class _TextfieldsState extends State<Textfields> {
         validator: widget.validator,
         keyboardType: widget.textInputType,
         obscureText: widget.isPassword,
-        controller: TextEditingController(),
+        controller: widget.textEditingController,
         decoration: InputDecoration(
           hintText:
               widget.hintText, // Use the hintText property for placeholder text
