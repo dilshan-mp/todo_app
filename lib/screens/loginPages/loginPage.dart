@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/taskPage/homePage.dart';
 import 'package:todo_app/widgets/mainButton.dart';
 import 'package:todo_app/widgets/textFields.dart';
 import 'package:todo_app/widgets/transparentMainButton.dart';
@@ -12,6 +14,50 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  Future<void> login() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Login Successful', style: TextStyle(fontSize: 20)),
+          ),
+        );
+
+        // Navigate to homepage after successful login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } on FirebaseAuthException catch (e) {
+        String message = '';
+        if (e.code == 'user-not-found') {
+          message = "No user found for that email.";
+        } else if (e.code == 'wrong-password') {
+          message = "Wrong password provided for that user.";
+        } else {
+          message = "An error occurred. Please try again.";
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(message, style: const TextStyle(fontSize: 18)),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,10 +106,17 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 5,
           ),
-          const Textfields(
-            hintText: 'eneter name',
+          Textfields(
+            hintText: 'eneter email',
             textInputType: TextInputType.emailAddress,
             isPassword: false,
+            textEditingController: emailController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter email';
+              }
+              return null;
+            },
           ),
           const Padding(
             padding: EdgeInsets.only(left: 24, top: 25),
@@ -79,10 +132,17 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(
             height: 5,
           ),
-          const Textfields(
+          Textfields(
             hintText: 'eneter password',
             textInputType: TextInputType.visiblePassword,
             isPassword: true,
+            textEditingController: passwordController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter password';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 69,
@@ -90,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
           Center(
             child: MainButton(
               buttontext: 'Login',
-              onPressed: () {},
+              onPressed: login,
             ),
           ),
           const SizedBox(

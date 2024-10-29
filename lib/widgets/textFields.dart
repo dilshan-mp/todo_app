@@ -5,11 +5,16 @@ class Textfields extends StatefulWidget {
   final String hintText;
   final TextInputType textInputType;
   final bool isPassword;
+  final TextEditingController textEditingController;
+  final String? Function(String?)? validator;
+
   const Textfields(
       {super.key,
       required this.hintText,
       required this.textInputType,
-      required this.isPassword});
+      required this.isPassword,
+      required this.textEditingController,
+      this.validator});
 
   @override
   State<Textfields> createState() => _TextfieldsState();
@@ -20,11 +25,11 @@ class _TextfieldsState extends State<Textfields> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24),
-      child: TextField(
-        //controller: _controller, // Attach the controller to the TextField
+      child: TextFormField(
+        validator: widget.validator,
         keyboardType: widget.textInputType,
         obscureText: widget.isPassword,
-
+        controller: TextEditingController(),
         decoration: InputDecoration(
           hintText:
               widget.hintText, // Use the hintText property for placeholder text

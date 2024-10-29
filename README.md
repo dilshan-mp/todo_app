@@ -14,3 +14,17 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+priority
+category
+category anuwa short
+
+profile
+pencil icon add
+edit
+
+name and profile pic ek local storage eke save krnna
+share preferences
+about us dialog box ekak danna ekat share preferences wla save krnna
+
+task eka long press krma anthima ui eka penna onii..
