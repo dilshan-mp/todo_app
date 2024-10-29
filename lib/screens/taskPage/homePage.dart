@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/bottomNavigation.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,7 +11,14 @@ class HomePage extends StatelessWidget {
       backgroundColor: Colors.black26,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomNavigationBarExample(),
+              ),
+            );
+          },
           icon: const Icon(
             Icons.menu,
             color: Colors.white,

@@ -36,10 +36,7 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         // Navigate to homepage after successful login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        Navigator.pushReplacementNamed(context, "bottomNavigation");
       } on FirebaseAuthException catch (e) {
         String message = '';
         if (e.code == 'user-not-found') {

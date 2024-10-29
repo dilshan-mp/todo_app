@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/firebase_options.dart';
+import 'package:todo_app/screens/bottomNavigation.dart';
 import 'package:todo_app/screens/loginPages/firstPage.dart';
 import 'package:todo_app/screens/loginPages/loginPage.dart';
 import 'package:todo_app/screens/loginPages/registerPage.dart';
@@ -31,20 +32,23 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const HomePage(),
+      home: const FirstPage(),
       initialRoute: '/firstPage',
       routes: {
-        // //splashScreens
-        // '/firstPage': (context) => const FirstPage(),
-        // 'onBoardPage': (context) => const OnboardingPage(),
+        //splashScreens
+        '/firstPage': (context) => const FirstPage(),
+        'onBoardPage': (context) => const OnboardingPage(),
 
-        // //login pages
-        // '/firstLoginPage': (context) => const FirstLoginPage(),
-        // '/loginPage': (context) => const LoginPage(),
-        // '/registerPage': (context) => const Registerpage(),
+        //login pages
+        '/firstLoginPage': (context) => const FirstLoginPage(),
+        '/loginPage': (context) => const LoginPage(),
+        '/registerPage': (context) => const Registerpage(),
 
         //taskPage
-        "/homePage": (context) => const HomePage()
+        "/homePage": (context) => const HomePage(),
+
+        //bottomnavigation
+        "bottomNavigation": (context) => BottomNavigationBarExample()
       },
     );
   }
