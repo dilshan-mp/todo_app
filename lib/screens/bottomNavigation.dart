@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
+import 'package:todo_app/widgets/category.dart';
 import 'package:todo_app/widgets/textFields.dart';
 
 class BottomNavigationBarExample extends StatefulWidget {
@@ -37,11 +38,14 @@ class _BottomNavigationBarExampleState
         {
           'task': task,
           'priority': _selectedPriority,
+          'category': _selectedCategory,
+          //'categoryIcon':_selectedCategoryIcon,
           'createdAt': Timestamp.now(),
         },
       );
       _taskcontroller.clear();
       _selectedPriority = 0;
+      _selectedCategory = '';
       Navigator.pop(context);
     }
   }
@@ -240,6 +244,23 @@ class _BottomNavigationBarExampleState
     );
   }
 
+  final Map<String, IconData> _categoryIcons = {
+    'Grocery': Icons.shopping_cart,
+    'Design': Icons.design_services,
+    'Music': Icons.music_note,
+    'Home': Icons.home,
+  };
+
+  String _selectedCategory = '';
+  IconData? _selectedCategoryIcon;
+
+  void _selectCategory(String category) {
+    setState(() {
+      _selectedCategory = category;
+      //_selectedCategoryIcon = _categoryIcons[category];
+    });
+  }
+
   void _categoryShowDialogBox() {
     showDialog(
       context: context,
@@ -253,7 +274,7 @@ class _BottomNavigationBarExampleState
           content: Container(
             //constraints: BoxConstraints(maxHeight: 500),
             //color: Colors.amber,
-            height: 400,
+            height: 450,
             width: 300,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -264,93 +285,19 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.shopping_cart,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Grocery',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.work,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Grocery',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.cyan,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.sports,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'sports',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
+                      buildCategoryRow(
+                          context, 'Grocery', Icons.shopping_cart, Colors.green,
+                          () {
+                        _selectCategory('Grocery');
+                      }),
+                      buildCategoryRow(
+                          context, 'Work', Icons.work, Colors.orange, () {
+                        _selectCategory('Work');
+                      }),
+                      buildCategoryRow(
+                          context, 'Sport', Icons.sports, Colors.cyan, () {
+                        _selectCategory('Sport');
+                      }),
                     ],
                   ),
                 ),
@@ -361,93 +308,19 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.pink,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.design_services,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Design',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.purple,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.school,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'university',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.social_distance,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Social',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
+                      buildCategoryRow(
+                          context, 'Design', Icons.design_services, Colors.pink,
+                          () {
+                        _selectCategory('Desing');
+                      }),
+                      buildCategoryRow(context, 'School', Icons.design_services,
+                          Colors.purple, () {
+                        _selectCategory('School');
+                      }),
+                      buildCategoryRow(context, 'Scoial', Icons.social_distance,
+                          Colors.purple, () {
+                        _selectCategory('Scoial');
+                      }),
                     ],
                   ),
                 ),
@@ -458,93 +331,19 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.purple,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.music_note,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Music',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.favorite,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Health',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.cyan,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.movie,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Movie',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
+                      buildCategoryRow(
+                          context, 'Music', Icons.music_note, Colors.purple,
+                          () {
+                        _selectCategory('Music');
+                      }),
+                      buildCategoryRow(
+                          context, 'Health', Icons.favorite, Colors.green, () {
+                        _selectCategory('Health');
+                      }),
+                      buildCategoryRow(
+                          context, 'Movie', Icons.movie, Colors.cyan, () {
+                        _selectCategory('Movie');
+                      }),
                     ],
                   ),
                 ),
@@ -555,37 +354,15 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        //color: Colors.red,
-                        child: Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(2),
-                                  ),
-                                  minimumSize: const Size.fromHeight(
-                                    60,
-                                  ),
-                                  padding: EdgeInsets.zero),
-                              child: const Icon(
-                                Icons.home,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const Text(
-                              'Home',
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                      ),
+                      buildCategoryRow(
+                          context, 'Home', Icons.home, Colors.orange, () {
+                        _selectCategory('Home');
+                      }),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                          _addTaskToFirestore();
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(
@@ -605,7 +382,10 @@ class _BottomNavigationBarExampleState
                 ),
 
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _addTaskToFirestore();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
                     shape: RoundedRectangleBorder(
