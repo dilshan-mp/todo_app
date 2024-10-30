@@ -384,7 +384,7 @@ class _BottomNavigationBarExampleState
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _addTaskToFirestore();
+                    _ShowDialogBox();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blueAccent,
