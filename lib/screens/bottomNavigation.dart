@@ -13,12 +13,13 @@ class _BottomNavigationBarExampleState
     extends State<BottomNavigationBarExample> {
   TextEditingController _taskcontroller = TextEditingController();
   int _selectedIndex = 0;
+  int _selectedPriority = 0;
 
   final List<Widget> _pages = [
     HomePage(),
-    CalendarPage(),
-    FocusPage(),
-    ProfilePage(),
+    //CalendarPage(),
+    //FocusPage(),
+    //ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -31,14 +32,16 @@ class _BottomNavigationBarExampleState
 
   void _addTaskToFirestore() async {
     String task = _taskcontroller.text;
-    if (task.isNotEmpty) {
+    if (task.isNotEmpty && _selectedPriority != 0) {
       await FirebaseFirestore.instance.collection('task').add(
         {
           'task': task,
+          'priority': _selectedPriority,
           'createdAt': Timestamp.now(),
         },
       );
       _taskcontroller.clear();
+      _selectedPriority = 0;
       Navigator.pop(context);
     }
   }
@@ -116,7 +119,7 @@ class _BottomNavigationBarExampleState
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: _categoryShowDialogBox,
               icon: const Icon(
                 Icons.category_outlined,
                 color: Colors.white,
@@ -142,21 +145,484 @@ class _BottomNavigationBarExampleState
     );
   }
 
-  late final Function(int) onPrioritySelected;
   void _priorityDialogBox() {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Task Priority'),
-            content: Container(
-              height: 200,
-              width: 30,
-              color: Colors.amber,
-              child: GridView.count(crossAxisCount: 4),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Task Priority'),
+          content: Container(
+            height: 200,
+            width: 300,
+            //color: Colors.amber,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 6,
+              ),
+              itemCount: 10,
+              itemBuilder: (context, Index) {
+                int Priority = Index + 1;
+                return ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _selectedPriority == Priority
+                        ? Colors.blue // Highlight selected button
+                        : Colors.grey, // Default color for unselected
+                    shape:
+                        const RoundedRectangleBorder(), // Circular shape for buttons
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _selectedPriority = Priority;
+                    });
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.flag),
+                      Text(
+                        '$Priority',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
-          );
-        });
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'cancel',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
+            ),
+            const SizedBox(
+              width: 70,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _ShowDialogBox();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Save',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _categoryShowDialogBox() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Color(0xff363636),
+          title: const Text(
+            'Choose Category',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: Container(
+            //constraints: BoxConstraints(maxHeight: 500),
+            //color: Colors.amber,
+            height: 400,
+            width: 300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Row 1
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Grocery',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.work,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Grocery',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.cyan,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.sports,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'sports',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Row 2
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.pink,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.design_services,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Design',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.school,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'university',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.social_distance,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Social',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Row 3
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.music_note,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Music',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.favorite,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Health',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.cyan,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.movie,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Movie',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Row 4
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 80,
+                        height: 80,
+                        //color: Colors.red,
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2),
+                                  ),
+                                  minimumSize: const Size.fromHeight(
+                                    60,
+                                  ),
+                                  padding: EdgeInsets.zero),
+                              child: const Icon(
+                                Icons.home,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Text(
+                              'Home',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        child: const Column(
+                          children: [
+                            Icon(Icons.add, color: Colors.white),
+                            Text('Create New',
+                                style: TextStyle(color: Colors.white)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Add Category',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -225,84 +691,3 @@ class _BottomNavigationBarExampleState
 }
 
 // Example Pages
-class CalendarPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-        child: Text('Calendar Page', style: TextStyle(fontSize: 24)));
-  }
-}
-
-class FocusPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-        child: Text('Focus Page', style: TextStyle(fontSize: 24)));
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-        child: Text('Profile Page', style: TextStyle(fontSize: 24)));
-  }
-}
-
-ThemeData buildShrineTheme() {
-  final ThemeData base = ThemeData.light();
-  return base.copyWith(
-    colorScheme: shrineColorScheme,
-    textTheme: buildShrineTextTheme(base.textTheme),
-  );
-}
-
-TextTheme buildShrineTextTheme(TextTheme base) {
-  return base
-      .copyWith(
-        bodyLarge: base.bodyLarge?.copyWith(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-        labelLarge: base.labelLarge?.copyWith(
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-          letterSpacing: defaultLetterSpacing,
-        ),
-      )
-      .apply(
-        fontFamily: 'Rubik',
-        displayColor: shrineBrown900,
-        bodyColor: shrineBrown900,
-      );
-}
-
-const ColorScheme shrineColorScheme = ColorScheme(
-  primary: shrinePink100,
-  secondary: shrinePink50,
-  surface: shrineSurfaceWhite,
-  background: shrineBackgroundWhite,
-  error: shrineErrorRed,
-  onPrimary: shrineBrown900,
-  onSecondary: shrineBrown900,
-  onSurface: shrineBrown900,
-  onBackground: shrineBrown900,
-  onError: shrineSurfaceWhite,
-  brightness: Brightness.light,
-);
-
-const Color shrinePink50 = Color(0xFFFEEAE6);
-const Color shrinePink100 = Color(0xFFFEDBD0);
-const Color shrinePink300 = Color(0xFFFBB8AC);
-const Color shrinePink400 = Color(0xFFEAA4A4);
-
-const Color shrineBrown900 = Color(0xFF442B2D);
-const Color shrineBrown600 = Color(0xFF7D4F52);
-
-const Color shrineErrorRed = Color(0xFFC5032B);
-
-const Color shrineSurfaceWhite = Color(0xFFFFFBFA);
-const Color shrineBackgroundWhite = Colors.white;
-
-const double defaultLetterSpacing = 0.03;
