@@ -123,7 +123,7 @@ class _BottomNavigationBarExampleState
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: _priorityDialogBox,
               icon: const Icon(
                 Icons.flag,
                 color: Colors.white,
@@ -140,6 +140,17 @@ class _BottomNavigationBarExampleState
         );
       },
     );
+  }
+
+  void _priorityDialogBox() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Task Priority'),
+            
+          );
+        });
   }
 
   @override
