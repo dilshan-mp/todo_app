@@ -142,13 +142,19 @@ class _BottomNavigationBarExampleState
     );
   }
 
+  late final Function(int) onPrioritySelected;
   void _priorityDialogBox() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Task Priority'),
-            
+            content: Container(
+              height: 200,
+              width: 30,
+              color: Colors.amber,
+              child: GridView.count(crossAxisCount: 4),
+            ),
           );
         });
   }
