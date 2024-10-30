@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
 import 'package:todo_app/widgets/textFields.dart';
@@ -10,6 +11,7 @@ class BottomNavigationBarExample extends StatefulWidget {
 
 class _BottomNavigationBarExampleState
     extends State<BottomNavigationBarExample> {
+  TextEditingController _taskcontroller = TextEditingController();
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -20,17 +22,34 @@ class _BottomNavigationBarExampleState
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(
+      () {
+        _selectedIndex = index;
+      },
+    );
   }
 
+  void _addTaskToFirestore() async {
+    String task = _taskcontroller.text;
+    if (task.isNotEmpty) {
+      await FirebaseFirestore.instance.collection('task').add(
+        {
+          'task': task,
+          'createdAt': Timestamp.now(),
+        },
+      );
+      _taskcontroller.clear();
+      Navigator.pop(context);
+    }
+  }
+
+  // ignore: non_constant_identifier_names
   void _ShowDialogBox() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor: Color(0XFF363636),
+          backgroundColor: const Color(0XFF363636),
           title: const Text(
             "Add Task",
             style: TextStyle(
@@ -41,59 +60,82 @@ class _BottomNavigationBarExampleState
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 327, // Fixed width
-                height: 43, // Fixed height
+                width: 335, // Fixed width
+                height: 55, // Fixed height
                 padding: const EdgeInsets.symmetric(
-                    vertical: 8, horizontal: 16), // Padding // Positioning
+                  vertical: 8,
+                  horizontal: 12,
+                ), // Padding // Positioning
                 child: TextField(
+                  controller: _taskcontroller,
                   style: const TextStyle(
                     color: Colors.white, // Text color
                   ),
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(
+                    enabledBorder: const OutlineInputBorder(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4), // Border radius
+                        topLeft: Radius.circular(4),
                         bottomLeft: Radius.circular(4),
                         bottomRight: Radius.circular(4),
                         topRight: Radius.circular(4),
                       ),
                       borderSide: BorderSide(
-                        color: Colors.white, // Border color
-                        width: 5,
+                        color: Colors.white, // Border color when not focused
+                        width: 2, // Border width
+                      ),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        bottomLeft: Radius.circular(4),
+                        bottomRight: Radius.circular(4),
+                        topRight: Radius.circular(4),
+                      ),
+                      borderSide: BorderSide(
+                        color: Colors.white, // Border color when focused
+                        width: 2, // Border width
                       ),
                     ),
                     filled: true,
                     fillColor: Colors.white
                         .withOpacity(0), // Background color with opacity
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16), // Inner padding
+                      horizontal: 16, // Inner padding
+                    ),
                   ),
                 ),
               )
             ],
           ),
           actions: [
-            TextButton(
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Colors.white), // Optional: style the button text
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.timer,
+                color: Colors.white,
               ),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
             ),
-            TextButton(
-              child: const Text(
-                "OK",
-                style: TextStyle(
-                    color: Colors.white), // Optional: style the button text
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.category_outlined,
+                color: Colors.white,
               ),
-              onPressed: () {
-                // Add any action you want on OK press
-                Navigator.of(context).pop(); // Close the dialog
-              },
             ),
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.flag,
+                color: Colors.white,
+              ),
+            ),
+            IconButton(
+              onPressed: _addTaskToFirestore,
+              icon: const Icon(
+                Icons.send,
+                color: Colors.blueAccent,
+              ),
+            )
           ],
         );
       },
