@@ -107,7 +107,18 @@ class HomePage extends StatelessWidget {
                       child: ListTile(
                         onTap: () {},
                         onLongPress: () {
-                          Navigator.pushReplacementNamed(context, "/editPage");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditPage(
+                                taskText: taskText,
+                                createdAt: createdAt,
+                                categoryColor: categoryColor,
+                                icon: icon,
+                                category: category, priority: priority.toString(),
+                              ),
+                            ),
+                          );
                         },
                         trailing: Container(
                           //color: Colors.amber,

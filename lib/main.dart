@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      home: const FirstPage(),
+      home: FirstPage(),
       initialRoute: '/firstPage',
       routes: {
         //splashScreens
@@ -47,7 +47,6 @@ class MyApp extends StatelessWidget {
 
         //taskPage
         "/homePage": (context) => const HomePage(),
-        "/editPage":(context)=>const EditPage(),
 
         //bottomnavigation
         "bottomNavigation": (context) => BottomNavigationBarExample()
