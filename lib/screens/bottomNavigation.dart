@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/calender/calender.dart';
+import 'package:todo_app/screens/focus/focus.dart';
+import 'package:todo_app/screens/profile/profile.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
 import 'package:todo_app/widgets/category.dart';
 import 'package:todo_app/widgets/textFields.dart';
@@ -19,9 +22,9 @@ class _BottomNavigationBarExampleState
 
   final List<Widget> _pages = [
     HomePage(),
-    //CalendarPage(),
-    //FocusPage(),
-    //ProfilePage(),
+    Calender(),
+    FocusPage(),
+    ProfilePage()
   ];
 
   void _onItemTapped(int index) {
@@ -127,7 +130,7 @@ class _BottomNavigationBarExampleState
               ),
             ),
             IconButton(
-              onPressed: _categoryShowDialogBox,
+              onPressed: categoryShowDialogBox,
               icon: const Icon(
                 Icons.category_outlined,
                 color: Colors.white,
@@ -267,7 +270,7 @@ class _BottomNavigationBarExampleState
     });
   }
 
-  void _categoryShowDialogBox() {
+  void categoryShowDialogBox() {
     showDialog(
       context: context,
       builder: (BuildContext context) {

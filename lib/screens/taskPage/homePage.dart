@@ -91,6 +91,7 @@ class HomePage extends StatelessWidget {
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, Index) {
                   var task = snapshot.data!.docs[Index];
+                  var taskId = task.id;
                   var taskText = task['task'];
                   var createdAt = (task['createdAt'] as Timestamp).toDate();
                   var category = task['category'];
@@ -111,11 +112,14 @@ class HomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditPage(
+                                taskId:taskId,
                                 taskText: taskText,
                                 createdAt: createdAt,
                                 categoryColor: categoryColor,
                                 icon: icon,
-                                category: category, priority: priority.toString(),
+                                category: category,
+                                priority: priority.toString(),
+                                
                               ),
                             ),
                           );
