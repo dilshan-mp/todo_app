@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
 import 'package:todo_app/widgets/category.dart';
@@ -33,7 +34,8 @@ class _BottomNavigationBarExampleState
 
   void _addTaskToFirestore() async {
     String task = _taskcontroller.text;
-    if (task.isNotEmpty && _selectedPriority != 0) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (task.isNotEmpty && _selectedPriority != 0 && user != null) {
       await FirebaseFirestore.instance.collection('task').add(
         {
           'task': task,
@@ -41,6 +43,7 @@ class _BottomNavigationBarExampleState
           'category': _selectedCategory,
           //'categoryIcon':_selectedCategoryIcon,
           'createdAt': Timestamp.now(),
+          'userId': user.uid
         },
       );
       _taskcontroller.clear();

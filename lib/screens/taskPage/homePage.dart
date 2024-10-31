@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/bottomNavigation.dart';
@@ -8,6 +9,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.black26,
       appBar: AppBar(
@@ -90,7 +92,6 @@ class HomePage extends StatelessWidget {
                   var task = snapshot.data!.docs[Index];
                   var taskText = task['task'];
                   var createdAt = (task['createdAt'] as Timestamp).toDate();
-
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -99,6 +100,28 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
                       child: ListTile(
+                        trailing: Container(
+                          //color: Colors.amber,
+                          width: 120,
+                          height: 40,
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(8)),
+                              ),
+                              Spacer(),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.cyan,
+                                    borderRadius: BorderRadius.circular(8)),
+                                width: 50,
+                              )
+                            ],
+                          ),
+                        ),
                         leading: Checkbox(
                           value: false,
                           onChanged: (value) {},
