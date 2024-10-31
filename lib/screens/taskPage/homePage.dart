@@ -106,11 +106,25 @@ class HomePage extends StatelessWidget {
                           height: 40,
                           child: Row(
                             children: [
-                              Container(
-                                width: 60,
-                                decoration: BoxDecoration(
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal:
+                                          8.0), // Optional padding for some spacing
+                                  height: 40,
+                                  decoration: BoxDecoration(
                                     color: Colors.red,
-                                    borderRadius: BorderRadius.circular(8)),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(
+                                    child: FittedBox(
+                                      fit: BoxFit
+                                          .scaleDown, // Ensures text scales if it overflows
+                                      child: Text(
+                                          'samplehhhhhh or even longer text to expand'),
+                                    ),
+                                  ),
+                                ),
                               ),
                               Spacer(),
                               Container(

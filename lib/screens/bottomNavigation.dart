@@ -41,7 +41,8 @@ class _BottomNavigationBarExampleState
           'task': task,
           'priority': _selectedPriority,
           'category': _selectedCategory,
-          //'categoryIcon':_selectedCategoryIcon,
+          'categoryImage': _imagePath,
+          'categoryColor': _hexcolor,
           'createdAt': Timestamp.now(),
           'userId': user.uid
         },
@@ -255,12 +256,14 @@ class _BottomNavigationBarExampleState
   };
 
   String _selectedCategory = '';
-  IconData? _selectedCategoryIcon;
+  String _imagePath = '';
+  String _hexcolor = '';
 
-  void _selectCategory(String category) {
+  void _selectCategory(String category, String imagePath, String hexcolor) {
     setState(() {
       _selectedCategory = category;
-      //_selectedCategoryIcon = _categoryIcons[category];
+      _imagePath = imagePath;
+      _hexcolor = hexcolor;
     });
   }
 
@@ -288,18 +291,20 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      buildCategoryRow(
-                          context, 'Grocery', Icons.shopping_cart, Colors.green,
-                          () {
-                        _selectCategory('Grocery');
+                      buildCategoryRow(context, 'Grocery',
+                          'assets/category/grocery.png', '#CCFF80', () {
+                        _selectCategory('Grocery',
+                            'assets/category/grocery.png', '#CCFF80');
                       }),
-                      buildCategoryRow(
-                          context, 'Work', Icons.work, Colors.orange, () {
-                        _selectCategory('Work');
+                      buildCategoryRow(context, 'Work',
+                          'assets/category/work.png', '#FF9680', () {
+                        _selectCategory(
+                            'Work', 'assets/category/work.png', '#FF9680');
                       }),
-                      buildCategoryRow(
-                          context, 'Sport', Icons.sports, Colors.cyan, () {
-                        _selectCategory('Sport');
+                      buildCategoryRow(context, 'Sport',
+                          'assets/category/sport.png', '#80FFFF', () {
+                        _selectCategory(
+                            'Sport', 'assets/category/sport.png', '#80FFFF');
                       }),
                     ],
                   ),
@@ -311,18 +316,20 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      buildCategoryRow(
-                          context, 'Design', Icons.design_services, Colors.pink,
-                          () {
-                        _selectCategory('Desing');
+                      buildCategoryRow(context, 'Design',
+                          'assets/category/design.png', '#80FFD9', () {
+                        _selectCategory(
+                            'Desing', 'assets/category/design.png', '#80FFD9');
                       }),
-                      buildCategoryRow(context, 'School', Icons.design_services,
-                          Colors.purple, () {
-                        _selectCategory('School');
+                      buildCategoryRow(context, 'School',
+                          'assets/category/univercity.png', '#809CFF', () {
+                        _selectCategory('School',
+                            'assets/category/univercity.png', '#809CFF');
                       }),
-                      buildCategoryRow(context, 'Scoial', Icons.social_distance,
-                          Colors.purple, () {
-                        _selectCategory('Scoial');
+                      buildCategoryRow(context, 'Scoial',
+                          'assets/category/megaphone.png', '#FF80EB', () {
+                        _selectCategory('Scoial',
+                            'assets/category/megaphone.png', '#FF80EB');
                       }),
                     ],
                   ),
@@ -334,18 +341,20 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      buildCategoryRow(
-                          context, 'Music', Icons.music_note, Colors.purple,
-                          () {
-                        _selectCategory('Music');
+                      buildCategoryRow(context, 'Music',
+                          'assets/category/music.png', '#FC80FF', () {
+                        _selectCategory(
+                            'Music', 'assets/category/music.png', '#FC80FF');
                       }),
-                      buildCategoryRow(
-                          context, 'Health', Icons.favorite, Colors.green, () {
-                        _selectCategory('Health');
+                      buildCategoryRow(context, 'Health',
+                          'assets/category/heartbeat.png', '#80FFA3', () {
+                        _selectCategory('Health',
+                            'assets/category/heartbeat.png', '#80FFA3');
                       }),
-                      buildCategoryRow(
-                          context, 'Movie', Icons.movie, Colors.cyan, () {
-                        _selectCategory('Movie');
+                      buildCategoryRow(context, 'Movie',
+                          'assets/category/video-camera.png', '#80D1FF', () {
+                        _selectCategory('Movie',
+                            'assets/category/video-camera.png', '#80D1FF');
                       }),
                     ],
                   ),
@@ -357,9 +366,10 @@ class _BottomNavigationBarExampleState
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      buildCategoryRow(
-                          context, 'Home', Icons.home, Colors.orange, () {
-                        _selectCategory('Home');
+                      buildCategoryRow(context, 'Home',
+                          'assets/category/home.png', '#FFCC80', () {
+                        _selectCategory(
+                            'Home', 'assets/category/home.png', '#FFCC80');
                       }),
                       ElevatedButton(
                         onPressed: () {
