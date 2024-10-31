@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/bottomNavigation.dart';
+import 'package:todo_app/screens/taskPage/editPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -92,6 +93,10 @@ class HomePage extends StatelessWidget {
                   var task = snapshot.data!.docs[Index];
                   var taskText = task['task'];
                   var createdAt = (task['createdAt'] as Timestamp).toDate();
+                  var category = task['category'];
+                  var categoryColor = task['categoryColor'];
+                  var icon = task['categoryImage'];
+                  var priority = task['priority'];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -100,38 +105,69 @@ class HomePage extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
                       child: ListTile(
+                        onTap: () {},
+                        onLongPress: () {
+                          Navigator.pushReplacementNamed(context, "/editPage");
+                        },
                         trailing: Container(
                           //color: Colors.amber,
                           width: 120,
                           height: 40,
                           child: Row(
                             children: [
-                              Expanded(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal:
-                                          8.0), // Optional padding for some spacing
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                    child: FittedBox(
-                                      fit: BoxFit
-                                          .scaleDown, // Ensures text scales if it overflows
-                                      child: Text(
-                                          'samplehhhhhh or even longer text to expand'),
+                              Container(
+                                width: 80, // Optional padding for some spacing
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Color(int.parse(
+                                      categoryColor.replaceFirst('#', '0XFF'))),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      //color: Colors.amber,
+                                      width: 20,
+                                      height: 20,
+                                      child: Image.asset(
+                                        icon,
+                                        fit: BoxFit.fill,
+                                      ),
                                     ),
-                                  ),
+                                    Container(
+                                      //color: Colors.white,
+                                      width: 60,
+                                      child: Center(child: Text(category)),
+                                    )
+                                  ],
                                 ),
                               ),
                               Spacer(),
                               Container(
                                 decoration: BoxDecoration(
-                                    color: Colors.cyan,
-                                    borderRadius: BorderRadius.circular(8)),
-                                width: 50,
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all()),
+                                height: 40,
+                                width: 40,
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.flag,
+                                        size: 10,
+                                        color: Colors.white,
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        '${priority}',
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 11),
+                                      )
+                                    ],
+                                  ),
+                                ),
                               )
                             ],
                           ),

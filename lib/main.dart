@@ -9,6 +9,7 @@ import 'package:todo_app/screens/loginPages/loginPage.dart';
 import 'package:todo_app/screens/loginPages/registerPage.dart';
 import 'package:todo_app/screens/splashPages/firstPage.dart';
 import 'package:todo_app/screens/splashPages/secondPage.dart';
+import 'package:todo_app/screens/taskPage/editPage.dart';
 import 'package:todo_app/screens/taskPage/homePage.dart';
 
 void main() async {
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
 
         //taskPage
         "/homePage": (context) => const HomePage(),
+        "/editPage":(context)=>const EditPage(),
 
         //bottomnavigation
         "bottomNavigation": (context) => BottomNavigationBarExample()
