@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -9,6 +13,38 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File? _profileImage;
+  final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadprofileImage();
+  }
+
+  Future<void> loadprofileImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? imagePath = prefs.getString('profile_image');
+    if (imagePath != null && imagePath.isNotEmpty) {
+      setState(() {
+        _profileImage = File(imagePath);
+      });
+    }
+  }
+
+  Future<void> _picImage() async {
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _profileImage = File(pickedFile.path);
+      });
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('profile_image', pickedFile.path);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,17 +63,17 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _picImage,
                   style: ElevatedButton.styleFrom(
                       padding:
                           EdgeInsets.zero, // Removes padding around the image
                       shape: const CircleBorder(),
                       fixedSize: const Size(60, 60)),
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage(
+                  child:  CircleAvatar(
+                    backgroundImage:_profileImage!=null?FileImage(_profileImage!):const AssetImage(
                       'assets/profile_picture.jpg',
-                    ), // or NetworkImage for a URL
-                    radius: 40, // Adjust the size of the profile picture
+                    ), 
+                    radius: 40,
                   ),
                 ),
               ),
