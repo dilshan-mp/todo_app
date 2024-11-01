@@ -11,6 +11,28 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //final user = FirebaseAuth.instance.currentUser;
+    Future<String> getUserName() async {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          DocumentSnapshot userDoc = await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(user.uid)
+              .get();
+          if (userDoc.exists && userDoc.data() != null) {
+            Map<String, dynamic> userData =
+                userDoc.data() as Map<String, dynamic>;
+            print('User data: $userData');
+            return userData['name'] ?? 'User';
+          }
+        }
+        return 'user'; // Fallback in case of null data or non-existent document
+      } catch (e) {
+        print('Error fetching user name: $e');
+        return 'user'; // Fallback in case of an error
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.black26,
       appBar: AppBar(
@@ -28,10 +50,26 @@ class HomePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        title: const Text(
-          "INDEX",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: FutureBuilder(
+            future: getUserName(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Text(
+                  "Loading....",
+                  style: TextStyle(color: Colors.white),
+                );
+              }
+              if (snapshot.hasError) {
+                return const Text(
+                  "Error",
+                  style: TextStyle(color: Colors.white),
+                );
+              }
+              return Text(
+                "Hello ${snapshot.data}",
+                style: const TextStyle(color: Colors.white),
+              );
+            }),
         backgroundColor: Colors.black26,
         actions: [
           Padding(
@@ -41,7 +79,7 @@ class HomePage extends StatelessWidget {
                 print("User image tapped");
               },
               child: const CircleAvatar(
-                backgroundImage: AssetImage('assets/user_image.png'),
+                backgroundImage: AssetImage(''),
                 radius: 20,
               ),
             ),
@@ -112,14 +150,13 @@ class HomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditPage(
-                                taskId:taskId,
+                                taskId: taskId,
                                 taskText: taskText,
                                 createdAt: createdAt,
                                 categoryColor: categoryColor,
                                 icon: icon,
                                 category: category,
                                 priority: priority.toString(),
-                                
                               ),
                             ),
                           );

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/screens/loginPages/loginPage.dart';
@@ -34,6 +35,8 @@ class _Registerpagestate extends State<Registerpage> {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
 
+        addUsersToFireStore(userCredential.user!);
+
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
             "Registered Successfully",
@@ -61,6 +64,17 @@ class _Registerpagestate extends State<Registerpage> {
           ),
         ));
       }
+    }
+  }
+
+  void addUsersToFireStore(User firebaseUser) async {
+    String name = usernamecontroller.text;
+    String email = emailcontroller.text;
+    if (name.isNotEmpty && email.isNotEmpty) {
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(firebaseUser.uid)
+          .set({'name': name, 'email': email});
     }
   }
 
@@ -171,9 +185,9 @@ class _Registerpagestate extends State<Registerpage> {
             Center(
               child: MainButton(
                 buttontext: 'Register',
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    registration();
+                    await registration();
                   }
                 },
               ),
